@@ -11,4 +11,9 @@ router
   .post(validation.createUser, controller.createUser)
   .get(verifyToken, validation.getUser, controller.getUser)
 
+router
+  .route('/:username')
+  .get(controller.getUser)
+  .post(verifyToken, controller.interactUser)
+
 export default router

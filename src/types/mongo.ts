@@ -1,5 +1,5 @@
 export interface MongoSettings {
-  server: string
+  servers: string
   dbName: string
   username: string | undefined
   password: string | undefined

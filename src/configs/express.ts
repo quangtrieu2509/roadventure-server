@@ -5,7 +5,10 @@ import bodyParser from 'body-parser'
 import timeout from 'connect-timeout'
 import methodOverride from 'method-override'
 import morgan from 'morgan'
+import passport from 'passport'
+import session from 'express-session'
 
+import './passport'
 import { emitter } from './event-emitter'
 import { vars } from './vars'
 import { events } from '../constants'
@@ -28,6 +31,20 @@ const initApp = (app: express.Express): void => {
   app.use(methodOverride())
   app.use(helmet())
   app.use(cors())
+  app.use(
+    session({
+      secret: 'secretcode',
+      resave: true,
+      saveUninitialized: true,
+      cookie: {
+        sameSite: 'none',
+        secure: true,
+        maxAge: 1000 * 60 * 60 * 24 * 7 // One Week
+      }
+    })
+  )
+  app.use(passport.initialize())
+  app.use(passport.session())
 
   app.get('/health', (_req: Request, res: Response) => {
     res.send('OK')

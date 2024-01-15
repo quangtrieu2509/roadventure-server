@@ -12,13 +12,14 @@ mongoose.connection.on('error', (err: Error) => {
 })
 
 const makeMongoURI = (mongoSettings: MongoSettings): string => {
-  const { server, username, password, repls, dbName = '' } = mongoSettings
-  const hostURL = server.split(' ').join(',')
+  const { servers, username, password, repls } = mongoSettings
+  const hostURL = servers.split(' ').join(',')
   const loginOption =
     username != null && password != null ? `${username}:${password}@` : ''
   const replOption = repls != null ? `?replicaSet=${repls}` : ''
 
-  return `mongodb://${loginOption}${hostURL}/${dbName}${replOption}`
+  const connectOption = hostURL.search('127.0.0.1') === -1 ? '+srv' : ''
+  return `mongodb${connectOption}://${loginOption}${hostURL}/${replOption}`
 }
 
 const connect = (): void => {
