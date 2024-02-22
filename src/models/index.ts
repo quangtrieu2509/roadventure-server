@@ -1,1 +1,6 @@
 export * from './user'
+export * from './userInteract'
+export * from './post'
+export * from './postInteract'
+export * from './trip'
+export * from './tripInteract'

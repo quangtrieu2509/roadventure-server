@@ -24,7 +24,7 @@ const haltOnTimedout = (req: Request, _res: Response, next: any): void => {
 }
 
 const initApp = (app: express.Express): void => {
-  app.use(timeout('5s'))
+  app.use(timeout('10s'))
   app.use(morgan('dev'))
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))

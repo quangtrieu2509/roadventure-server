@@ -8,9 +8,7 @@ export interface IUser {
   phoneNumber: string
   accountType: string
   address: string
-  // followers: string[]
-  // following: string[]
   role: string
-  profilePhoto?: Buffer
+  picture?: string
   isActivated: boolean
 }

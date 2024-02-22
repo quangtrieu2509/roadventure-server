@@ -29,11 +29,18 @@ const TripSchema = new Schema(
       required: true,
       enum: [privacies.PUBLIC, privacies.PRIVATE]
     },
-    points: {
-      type: String
+    destinations: {
+      type: [
+        {
+          text: String,
+          placeName: String,
+          coordinates: [Number, Number],
+          description: String
+        }
+      ]
     },
     date: {
-      type: Date
+      type: [Date, Date]
     }
   },
   {

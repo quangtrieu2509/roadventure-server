@@ -2,8 +2,13 @@ export interface ITrip {
   id: string
   ownerId: string
   title: string
-  description: string
+  description?: string
   privacy: string
-  points: string
-  date: Date
+  destinations: Array<{
+    text: string
+    placeName: string
+    coordinates: number[]
+    description: string
+  }>
+  date: Date[]
 }

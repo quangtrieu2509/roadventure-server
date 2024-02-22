@@ -51,31 +51,9 @@ const UserSchema = new Schema(
       required: true,
       default: roles.USER
     },
-    profilePhoto: {
-      type: Buffer
+    picture: {
+      type: String
     },
-    // followers: {
-    //   type: [
-    //     {
-    //       type: String,
-    //       ref: 'user',
-    //       field: 'id'
-    //     }
-    //   ],
-    //   // type: Array<string>,
-    //   default: []
-    // },
-    // following: {
-    //   type: [
-    //     {
-    //       type: String,
-    //       ref: 'user',
-    //       field: 'id'
-    //     }
-    //   ],
-    //   // type: Array<string>,
-    //   default: []
-    // },
     isActivated: {
       type: Boolean,
       default: false

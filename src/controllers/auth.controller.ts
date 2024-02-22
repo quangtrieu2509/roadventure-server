@@ -12,6 +12,7 @@ interface GoogleUser {
   email: string
   given_name: string
   family_name: string
+  picture: string
 }
 
 export const signUpByGoogle = async (
@@ -22,7 +23,7 @@ export const signUpByGoogle = async (
   try {
     const body = req.body
 
-    let user = await userRepo.findUser({ username: body.username })
+    let user = await userRepo.getUser({ username: body.username })
 
     if (user == null) {
       const newUser = {
@@ -54,14 +55,16 @@ export const signInByGoogle = async (
   next: NextFunction
 ) => {
   try {
+    console.log(req.payload)
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    const { email, given_name, family_name } = req.payload as GoogleUser
-    const user = await userRepo.findUser({ email })
+    const { email, given_name, family_name, picture } = req.payload as GoogleUser
+    const user = await userRepo.getUser({ email })
 
     // if email do not exist yet
     if (user == null) {
       const userInfor = {
         email,
+        picture,
         givenName: given_name,
         familyName: family_name
       }
@@ -98,7 +101,7 @@ export const signInByEmail = async (
 ) => {
   try {
     const { email, password } = req.body
-    const user = await userRepo.findUser({ email })
+    const user = await userRepo.getUser({ email })
     const isMatch = await bcrypt.compare(password, user?.password ?? '')
 
     // if email existed
@@ -129,11 +132,11 @@ export const signUpByEmail = async (
 ) => {
   try {
     const body = req.body
-    let user = await userRepo.findUser({ username: body.username })
+    let user = await userRepo.getUser({ username: body.username })
 
     // if username do not exist yet
     if (user == null) {
-      user = await userRepo.findUser({ email: body.email })
+      user = await userRepo.getUser({ email: body.email })
 
       if (user == null) {
         const newUser = {

@@ -1,7 +1,6 @@
 import { Schema, model } from 'mongoose'
 
 import { type IUserInteract } from '../types'
-import { userInteractTypes } from '../constants'
 
 const UserInteractSchema = new Schema(
   {
@@ -22,10 +21,15 @@ const UserInteractSchema = new Schema(
       ref: 'user',
       field: 'id'
     },
-    type: {
-      type: String,
+    follow: {
+      type: Boolean,
       required: true,
-      enum: [userInteractTypes.FOLLOW, userInteractTypes.BLOCK]
+      default: false
+    },
+    block: {
+      type: Boolean,
+      required: true,
+      default: false
     }
   },
   {

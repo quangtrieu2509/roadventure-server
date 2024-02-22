@@ -1,4 +1,8 @@
 export const messages = {
+  OK: {
+    ec: 200,
+    msg: 'OK'
+  },
   CONNECT_GOOGLE_ACCOUNT: {
     ec: 210,
     msg: 'Connected Google account'

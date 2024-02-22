@@ -1,10 +1,11 @@
 import { v4 } from 'uuid'
 
-import { User } from '../models'
+import { Trip, User } from '../models'
 import type { IUser } from '../types'
 import { omitIsNil } from '../utils'
+import { UserInteract } from '../models/userInteract'
 
-const createUser = async (user: IUser): Promise<IUser> => {
+export const createUser = async (user: IUser): Promise<IUser> => {
   const newUser = new User({ ...user, id: v4() })
   return await newUser.save()
 }
@@ -14,13 +15,42 @@ const createUser = async (user: IUser): Promise<IUser> => {
 //   return (user != null)
 // }
 
-const findUser = async (filters: any): Promise<IUser | null> => {
+export const getUser = async (filters: any): Promise<IUser | null> => {
   const user = await User.findOne(omitIsNil(filters), { _id: 0 })
-  return (user == null) ? user : await user.toObject()
+
+  return user === null ? user : await user.toObject()
 }
 
-const updateUser = async (filters: any, fields: any): Promise<IUser | null> => {
+export const getUserProfile = async (filters: any): Promise<IUser | null> => {
+  const user = await User.findOne(omitIsNil(filters), { _id: 0 })
+
+  if (user === null) return user
+
+  const tripCount = await Trip.count({ ownerId: user.id })
+  const followingCount = await UserInteract.count({ srcUserId: user.id, follow: true })
+  const followers = await UserInteract.find({ desUserId: user.id, follow: true }, { srcUserId: 1 })
+
+  const returnedFollowers: string[] = []
+  followers.forEach((e) => {
+    returnedFollowers.push(e.srcUserId)
+  })
+
+  const returnedUser = {
+    ...user.toObject(),
+    tripCount,
+    followingCount,
+    followers: returnedFollowers
+  }
+
+  return returnedUser
+}
+
+export const getUserId = async (filters: any): Promise<string | null> => {
+  const user = await User.findOne(omitIsNil(filters), { _id: 0, id: 1 })
+
+  return user === null ? null : user.id
+}
+
+export const updateUser = async (filters: any, fields: any): Promise<IUser | null> => {
   return await User.findOneAndUpdate(omitIsNil(filters), omitIsNil(fields))
 }
-
-export { createUser, findUser, updateUser }

@@ -19,7 +19,7 @@ const TripInteractSchema = new Schema(
     tripId: {
       type: String,
       required: true,
-      ref: 'user',
+      ref: 'trip',
       field: 'id'
     },
     type: {
